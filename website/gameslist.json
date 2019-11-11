@@ -1,0 +1,44 @@
+{
+    "gameslist": [
+        {
+            "id": "game-of-knights",
+            "title": "Game Of Knights",
+            "keys": ["js", "webterminal"],
+            "picture_url": "https://github.com/JohnAD/webterminal/raw/master/screenshot.png",
+            "repo_url": "https://github.com/JohnAD/webterminal/blob/master/knights_example/game_of_knights.nim",
+            "description": "On a 5 x 5 chessboard, one knight faces another knight. Each turn, a knight can only jump to a place never occupied. Last knight moving wins."
+        },
+        {
+            "id": "game-of-knights",
+            "title": "Game Of Knights",
+            "keys": ["js", "webterminal"],
+            "picture_url": "https://github.com/JohnAD/webterminal/raw/master/screenshot.png",
+            "repo_url": "https://github.com/JohnAD/webterminal/blob/master/knights_example/game_of_knights.nim",
+            "description": "On a 5 x 5 chessboard, one knight faces another knight. Each turn, a knight can only jump to a place never occupied. Last knight moving wins."
+        },
+        {
+            "id": "game-of-knights",
+            "title": "Game Of Knights",
+            "keys": ["js", "webterminal"],
+            "picture_url": "https://github.com/JohnAD/webterminal/raw/master/screenshot.png",
+            "repo_url": "https://github.com/JohnAD/webterminal/blob/master/knights_example/game_of_knights.nim",
+            "description": "On a 5 x 5 chessboard, one knight faces another knight. Each turn, a knight can only jump to a place never occupied. Last knight moving wins."
+        },
+        {
+            "id": "game-of-knights",
+            "title": "Game Of Knights",
+            "keys": ["js", "webterminal"],
+            "picture_url": "https://github.com/JohnAD/webterminal/raw/master/screenshot.png",
+            "repo_url": "https://github.com/JohnAD/webterminal/blob/master/knights_example/game_of_knights.nim",
+            "description": "On a 5 x 5 chessboard, one knight faces another knight. Each turn, a knight can only jump to a place never occupied. Last knight moving wins."
+        },
+        {
+            "id": "game-of-knights",
+            "title": "Game Of Knights",
+            "keys": ["js", "webterminal"],
+            "picture_url": "https://github.com/JohnAD/webterminal/raw/master/screenshot.png",
+            "repo_url": "https://github.com/JohnAD/webterminal/blob/master/knights_example/game_of_knights.nim",
+            "description": "On a 5 x 5 chessboard, one knight faces another knight. Each turn, a knight can only jump to a place never occupied. Last knight moving wins."
+        }
+    ]
+}
