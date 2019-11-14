@@ -1,11 +1,15 @@
-"nimgame.online" is a web site for hosting open-source javascript-based games written in the Nim programming language.
+#nimgame.online
 
-# Submitting A Game
+a web site for hosting open-source javascript-based games written in the Nim programming language.
 
-Games are submitted via this repo by making changes to the 'website/gameslist.json'
-file. Simply fork the repo and send a PR.
+## Submitting A Game
 
-While this repo does contain the source code to the nimgame.online, you
+Games are submitted via this repo by making changes to the [`website/gameslist.json`](https://github.com/JohnAD/nimgame.online/blob/master/website/gameslist.json)
+file.
+
+Simply fork this repo and send a PR.
+
+While this repo does contain the source code to nimgame.online, you
 should be generally avoiding changes to the remainder of the repo.
 
 An entry in the **gameslist.json** object array should look like this:
@@ -46,22 +50,21 @@ Once you have sent this repo the pull request (PR) with the change, I will:
 
 Please allow me 3 days to do this. I do this as a volunteer effort, so my time is limited.
 
-# What Kind of Games?
+## What Kind of Games?
 
 As a requirement, the following conditions must be met:
 
-* must use JavaScript to function
+* must use client-side JavaScript to function
 * must be open source and available on a linkable hosted repo
 * must be written, at least in part, in Nim.
 
 You can certainly also use other languages and frameworks (in addition to Nim.) For example, I would consider hosting an app written with the Godot framework or Unity Framework; as long as it still meets the above conditions.
 
-Technically, I can refuse a game if it is extremely offensive; but I'm actaully pretty lax about that kind of thing.
+Technically, I can refuse any game if it is extremely offensive; but I'm actaully pretty lax about that kind of thing.
 
-If your game is written to run in a shell environment, I have written a library to help move it to Javascript: (webterminal)[https://nimble.directory/pkg/webterminal]
+If your game is written to run in a shell environment, I have written a library to help move it to Javascript: [webterminal](https://nimble.directory/pkg/webterminal)
 
-
-# Contact
+## Contact
 
 If you have any questions, feel free to leave a message on the repo.support forum.
 
