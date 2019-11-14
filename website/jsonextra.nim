@@ -292,6 +292,44 @@ proc jsonToXMLString*(node: JsonNode, hints: JsonNode): string =
   else:
     result &= "<err />"
 
+
+proc getObject*(node: JsonNode, key: string, value: string): JsonNode =
+  ## From a JSON array of objects, find the first object that has
+  ## a ``key`` of ``value``.
+  ##
+  ## If a matching object is not found or if the JSON array
+  ## is not formed correctly, it returns a null.
+  ##
+  ## Specifically, ``value`` matches if
+  ## the string representation ($) of the keyed node matches. So, for example:
+  ##
+  ## .. code:: nim
+  ##
+  ##     var j = %*{"test": [{"id": [2, 3], age: 43}, {"id": "larry", age: 90}]}
+  ##
+  ## Then,
+  ##
+  ## ``j["test"].getObject("id", "larry")`` would return ``{"id": "larry", age: 90}``
+  ##
+  ## ``j["test"].getObject("id", "bob")`` would return ``null``
+  ##
+  ## ``j["test"].getObject("id", "[2, 3]")`` would return ``{"id": [2, 3], age: 43}``
+  ##
+  ## returns the JSON object or JSON null
+  result = newJNull()
+  if node.kind != JArray:
+    return
+  for obj in node:
+    if obj.kind != JObject:
+      return
+    if obj.hasKey(key):
+      if $obj[key] == value:
+        result = obj.copy()
+        return
+      if $obj[key] == "\"$1\"".format(value): # handle the quoted string case
+        result = obj.copy()
+        return
+
 # type
 #   bling = object
 #     x: int

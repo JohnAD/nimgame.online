@@ -30,7 +30,7 @@ proc pageIndex*(data: var JsonNode): string =
     <div class="card-columns">
       {{#gameslist}}
       <div class="card">
-        <img src="{{picture_url}}" class="card-img-top" alt="pic for {{id}}">
+        <img src="/img/{{id}}/splash.png" class="card-img-top" alt="pic for {{id}}">
         <div class="card-body">
           <h5 class="card-title">{{title}}</h5>
           <p class="card-text">
@@ -51,5 +51,15 @@ proc pageIndex*(data: var JsonNode): string =
     </div>
   """, data)
   data["core"] = core
+  result = render(PageTemplate, data)
+
+
+# #####################################
+#
+# GAME PAGE
+#
+# #####################################
+
+proc pageGamePlay*(data: var JsonNode): string =
   result = render(PageTemplate, data)
 

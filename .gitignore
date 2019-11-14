@@ -1,3 +1,7 @@
 nimcache/
 website/credentials.nim
 website/webapp
+website/move.sh
+website/gamecores
+website/public/game
+website/public/img

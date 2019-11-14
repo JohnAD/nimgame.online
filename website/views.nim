@@ -80,3 +80,19 @@ routes:
     pageStart():
       data["gameslist"] = parseJson(gameslistJSON)["gameslist"]
       pageResponse pageIndex(data)
+  get "/game/@game_id":
+    pageStart():
+      data["gamedetail"] = parseJson(gameslistJSON)["gameslist"].getObject("id", @"game_id")
+      if data["gamedetail"].isNull:
+        addDirectMessage(jdgDanger, "Unable to locate a game with ID $1".format(@"game_id"))
+        pageRedirect("/")
+      else:
+        try:
+          data["core"] = readFile("./gamecores/$1/core.html".format(@"game_id"))
+          data["onload"] = data.safeStr(@["gamedetail","body_onload"])
+          pageResponse pageGamePlay(data)
+        except:
+          echo getCurrentExceptionMsg()
+          addDirectMessage(jdgDanger, "Internal Error: unable to load game data.")
+          pageRedirect("/")
+
