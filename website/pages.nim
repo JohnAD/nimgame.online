@@ -19,7 +19,6 @@ import
 
 proc pageIndex*(data: var JsonNode): string =
   let core = render(dedent """
-
     <div class="jumbotron">
       <h1 class="display-4">Play Games, Learn Nim.</h1>
       <p class="lead">A collection of online games written in the programming language Nim</p>
@@ -63,3 +62,24 @@ proc pageIndex*(data: var JsonNode): string =
 proc pageGamePlay*(data: var JsonNode): string =
   result = render(PageTemplate, data)
 
+
+proc pageAddGame*(data: var JsonNode): string =
+  let core = render(dedent """
+    <h1>Adding Your Game</h1>
+    <p>
+      If your game meets the following criteria:
+    </p>
+    <ol>
+      <li>It uses client-side JavaScript to function.</li>
+      <li>It is open source and available on a linkable hosted repo.</li>
+      <li>It is written, at least in part, in <a href="https://nim-lang.org/">Nim</a>.</li>
+    </ol>
+    <p>
+      Then I will happily consider adding your game to this website.
+    </p>
+    <p>
+      Please visit the website's repo at <a href="https://github.com/JohnAD/nimgame.online">github.com/JohnAD/nimgame.online</a> for details.
+    </p>
+  """, data)
+  data["core"] = core
+  result = render(PageTemplate, data)

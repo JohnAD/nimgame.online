@@ -95,4 +95,7 @@ routes:
           echo getCurrentExceptionMsg()
           addDirectMessage(jdgDanger, "Internal Error: unable to load game data.")
           pageRedirect("/")
+  get "/add-game":
+    pageStart():
+      pageResponse pageAddGame(data)
 

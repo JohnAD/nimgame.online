@@ -60,9 +60,9 @@ As a requirement, the following conditions must be met:
 * must be open source and available on a linkable hosted repo
 * must be written, at least in part, in Nim.
 
-You can certainly also use other languages and frameworks (in addition to Nim.) For example, I would consider hosting an app written with the Godot framework or Unity Framework; as long as it still meets the above conditions.
+You can certainly also use other languages and frameworks (in addition to Nim.) For example, I would consider hosting an app written with the Godot framework or Unity framework; as long as it still meets the above conditions.
 
-Technically, I can refuse any game if it is extremely offensive; but I'm actaully pretty lax about that kind of thing.
+Technically, I can refuse any game if it is extremely offensive; but I'm actually pretty lax about that kind of thing.
 
 If your game is written to run in a shell environment, I have written a library to help move it to Javascript: [webterminal](https://nimble.directory/pkg/webterminal)
 
