@@ -1,4 +1,6 @@
-#nimgame.online
+# nimgame.online
+
+https://nimgame.online/
 
 a web site for hosting open-source javascript-based games written in the Nim programming language.
 
