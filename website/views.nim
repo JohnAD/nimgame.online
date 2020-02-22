@@ -1,7 +1,7 @@
 import
-  oids,
-  macros,
-  base64,
+  # oids,
+  # macros,
+  # base64,
   times,
   re,
   strutils,
@@ -11,91 +11,48 @@ import json except `[]`
 
 import
   jester,
-  nullable
+  jestermongopool,
+  jestercookiemsgs,
+  jesterjson,
+  nullable,
+  mongopool
 
 import
   jsonextra,
-  models,
   database,
   pages,
   misc,
-  cookiehints,
   credentials
-
-#
-# local utils
-#
-
-template pageRedirect(url: string) =
-  sendMessagesOnRedirect()
-  redirect(url)
-
-template pageResponse*(content: string, contentType = "text/html;charset=utf-8") =
-  sendMessagesNow()
-  resp content, contentType
-
-template pageStart(body: untyped): untyped {.dirty.} =
-  #
-  # extra work to do up front
-  #
-  var data = newJObject()
-  #
-  # store cookies
-  #
-  data["cookies"] = newJObject()
-  for k, v in request.cookies.pairs:
-    data["cookies"][$k] = $v
-  #
-  # parse messages from previous pages
-  #
-  var newMessages = newJArray()  
-  if data["cookies"].hasKey("messages"):
-    let msgText = data["cookies"]["messages"].getStr()
-    let jsonText = base64.decode(msgText)
-    let j = parseJson(jsonText)
-    data["messagesToDisplay"] = j
-  else:
-    data["messagesToDisplay"] = @[]
-  #
-  # handle parameters, if any
-  #   we are combining both GET and POST parameters; keep that in mind
-  #
-  data["params"] = newJObject()
-  for k, v in request.params.pairs:
-    data["params"][$k] = $v
-  #
-  # base64-encoded URL of page (useful for passing as URL params)
-  #
-  data["encodedUrl"] = base64.encode(request.path)
-  #
-  create_webVisit(request)
-  #
-  body
 
 
 const gameslistJSON = staticRead("gameslist.json")
 
+connectMongoPool(mongoDbUrl, minConnections = 4, maxConnections = 12, loose=true)
+
 routes:
+  plugin db <- nextMongoConnection("/dberror")
+  plugin cm <- cookieMsgs()
+  plugin data <- jsonDefault()
   get "/":
-    pageStart():
-      data["gameslist"] = parseJson(gameslistJSON)["gameslist"]
-      pageResponse pageIndex(data)
+    create_webVisit(db, request)
+    data["gameslist"] = parseJson(gameslistJSON)["gameslist"]
+    resp pageIndex(data)
   get "/game/@game_id":
-    pageStart():
-      data["gamedetail"] = parseJson(gameslistJSON)["gameslist"].getObject("id", @"game_id")
-      if data["gamedetail"].isNull:
-        addDirectMessage(jdgDanger, "Unable to locate a game with ID $1".format(@"game_id"))
-        pageRedirect("/")
-      else:
-        try:
-          data["core"] = readFile("./gamecores/$1/core.html".format(@"game_id"))
-          data["onload"] = data.safeStr(@["gamedetail","body_onload"])
-          pageResponse pageGamePlay(data)
-        except:
-          echo getCurrentExceptionMsg()
-          addDirectMessage(jdgDanger, "Internal Error: unable to load game data.")
-          pageRedirect("/")
+    create_webVisit(db, request)
+    data["gamedetail"] = parseJson(gameslistJSON)["gameslist"].getObject("id", @"game_id")
+    if data["gamedetail"].isNull:
+      cm.say("danger", "Unable to locate a game with ID $1".format(@"game_id"))
+      redirect "/"
+    else:
+      try:
+        data["core"] = readFile("./gamecores/$1/core.html".format(@"game_id"))
+        data["onload"] = data.safeStr(@["gamedetail","body_onload"])
+        resp pageGamePlay(data)
+      except:
+        echo getCurrentExceptionMsg()
+        cm.say("danger", "Internal Error: unable to load game data.")
+        redirect "/"
   get "/add-game":
-    pageStart():
-      pageResponse pageAddGame(data)
+    create_webVisit(db, request)
+    resp pageAddGame(data)
 

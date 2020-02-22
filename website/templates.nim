@@ -17,6 +17,9 @@ const PageTemplate* = dedent """
         {{#js}}
       <script src="/game/{{id}}/{{short}}"></script>
         {{/js}}
+        {{#css}}
+      <link rel="stylesheet" type="text/css" href="/game/{{id}}/{{short}}">
+        {{/css}}
       {{/gamedetail}}
       <title>{{title}}</title>
     </head>

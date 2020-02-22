@@ -1,8 +1,33 @@
 {
     "gameslist": [
         {
-            "id": "game-of-knights",
+            "id": "snake",
             "version": "v1.0.0",
+            "title": "Snake",
+            "license": "MIT",
+            "copyright_owner": "Dominik Picheta",
+            "keys": ["js", "gamelight"],
+            "picture_url": "https://github.com/JohnAD/webterminal/blob/master/knights_example/splash-card-image.png?raw=true",
+            "repo_url": "https://github.com/dom96/snake",
+            "description": "A 2D JavaScript game akin to Nokia's Snake.",
+            "js": [
+                {
+                    "short": "snake.js", 
+                    "url": "https://picheta.me/snake/snake.js"
+                },
+            ],
+            "css": [
+                {
+                    "short": "snake.css", 
+                    "url": "https://picheta.me/snake/snake.css"
+                },
+            ],
+            "wget_html_url": "/gamecores/core.html",
+            "body_onload": "onLoad()"
+        },
+        {
+            "id": "game-of-knights",
+            "version": "v1.0.1",
             "title": "Game Of Knights",
             "license": "MIT",
             "copyright_owner": "John Dupuy",

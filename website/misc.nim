@@ -3,7 +3,7 @@ import
   md5,
   random,
   times,
-  oids,
+  # oids,
   unicode
 
 import strutils except strip

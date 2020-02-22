@@ -1,30 +1,29 @@
 import
-  oids,
-  times,
-  strutils,
-  options,
-  md5,
-  os
+  # oids,
+  # times,
+  # strutils,
+  options
+  # md5,
+  # os
 
 import json except `[]`
 import jsonextra
 
 import
   jester,
-  norm / mongodb,
+  # norm / mongodb,
+  mongopool,
+  bson,
+  bson / marshal,
   nullable
 
 import
-  models,
-  misc,
-  credentials
+  models
+  # credentials
 
-dbAddCollection(WebVisit)
-dbAddCollection(WebDay)
-dbAddCollection(WebMonth)
-
-connectMongoPool(mongoDbUrl, minConnections = 4, maxConnections = 12, loose=true)
-
+marshal(WebVisit)
+marshal(WebDay)
+marshal(WebMonth)
 
 ########################################
 #
@@ -33,66 +32,62 @@ connectMongoPool(mongoDbUrl, minConnections = 4, maxConnections = 12, loose=true
 ########################################
 
 
-proc create_webVisit*(request: Request) =
+proc create_webVisit*(db: var MongoConnection, request: Request) =
   try:
-    withDb:
-      #
-      # prep
-      #
-      let now = getTime()
-      var parms = newJObject()
-      for k, v in request.params.pairs:
-        parms[$k] = $v
-      #
-      # save the basic hit
-      #
-      var wv = WebVisit()
-      wv.url = request.path
-      echo request.headers
-      wv.user_agent = "" #TBD
-      wv.args = $parms
-      wv.status_code = 200 # TBD
-      wv.remote_addr = request.ip
-      wv.x_forwarded_for = "" # TBD
-      wv.date = now
-      #
-      wv.insert()
-      #
-      # upsert daily numbers
-      #
-      var temptime = now.utc
-      temptime.nanosecond = 0
-      temptime.second = 0
-      temptime.minute = 0
-      temptime.hour = 0
-      let top_of_day = temptime.toTime
+    #
+    # prep
+    #
+    let now = getTime()
+    var parms = newJObject()
+    for k, v in request.params.pairs:
+      parms[$k] = $v
+    #
+    # save the basic hit
+    #
+    var wv = WebVisit()
+    wv.url = request.path
+    wv.user_agent = "" #TBD
+    wv.args = $parms
+    wv.status_code = 200 # TBD
+    wv.remote_addr = request.ip
+    wv.x_forwarded_for = "" # TBD
+    wv.date = now
+    #
+    discard db.insertOne("WebVisit", wv.toBson)
+    #
+    # upsert daily numbers
+    #
+    var temptime = now.utc
+    temptime.nanosecond = 0
+    temptime.second = 0
+    temptime.minute = 0
+    temptime.hour = 0
+    let top_of_day = temptime.toTime
+    try:
+      var webDayDoc = db.find("WebDay", @@{"url": wv.url, "date": top_of_day}).returnOne()
+      webDayDoc["count"] = webDayDoc["count"] + 1
+      discard db.replaceOne("WebDay", @@{"_id": webDayDoc["_id"]}, webDayDoc)
+    except:
       var wd = WebDay()
-      let nwd = WebDay.getOneOption(cond = @@{"url": wv.url, "date": top_of_day})
-      if nwd.isSome:
-        wd = nwd.get
-        wd.count += 1
-        wd.update()
-      else:
-        wd.date = top_of_day
-        wd.url = wv.url
-        wd.count = 1
-        wd.insert()
-      #
-      # upsert monthly numbers
-      #
-      temptime.monthday = 1
-      let top_of_month = temptime.toTime
+      wd.date = top_of_day
+      wd.url = wv.url
+      wd.count = 1
+      discard db.insertOne("WebDay", wd.toBson)
+    #
+    # upsert monthly numbers
+    #
+    temptime.monthday = 1
+    let top_of_month = temptime.toTime
+    try:
+      var webMonthDoc = db.find("WebMonth", @@{"url": wv.url, "date": top_of_month}).returnOne()
+      webMonthDoc["count"] = webMonthDoc["count"] + 1
+      discard db.replaceOne("WebMonth", @@{"_id": webMonthDoc["_id"]}, webMonthDoc)
+    except:
       var wm = WebMonth()
-      let nwm = WebMonth.getOneOption(cond = @@{"url": wv.url, "date": top_of_month})
-      if nwm.isSome:
-        wm = nwm.get
-        wm.count += 1
-        wm.update()
-      else:
-        wm.date = top_of_month
-        wm.url = wv.url
-        wm.count = 1
-        wm.insert()
+      wm.date = top_of_month
+      wm.url = wv.url
+      wm.count = 1
+      discard db.insertOne("WebMonth", wm.toBson)
   except:
     echo getCurrentExceptionMsg()
 

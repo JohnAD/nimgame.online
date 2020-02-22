@@ -191,7 +191,7 @@ proc xmlstr_between(label: string, middle: string, tab: int, tight=false): strin
 proc jsonObjectToXML(node: JsonNode, hints: JsonNode, tab: int): string =
   # converts a JsonNode Object to XML
   var treeName = "object"
-  var subHint = %*{}
+  # var subHint = %*{}
   if hints.kind == Jobject:
     if "label" in hints:
       treeName = hints["label"].getStr

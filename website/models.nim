@@ -1,15 +1,7 @@
 import
-  oids,
+  # oids,
   times,
   tables
-
-import json except `[]`, `%*`
-import jsonextra
-
-import
-  nullable,
-  norm / mongodb,
-  misc
 
 #####################################
 #
@@ -19,7 +11,7 @@ import
 
 type
   WebVisit* = object
-    id* {.dbCol: "_id".}: Oid
+    # id* {.dbCol: "_id".}: Oid
     url*: string
     user_agent*: string
     args*: string
@@ -31,14 +23,14 @@ type
 
 type
   WebDay* = object
-    id* {.dbCol: "_id".}: Oid
+    # id* {.dbCol: "_id".}: Oid
     date*: Time
     url*: string
     count*: int
 
 type
   WebMonth* = object
-    id* {.dbCol: "_id".}: Oid
+    # id* {.dbCol: "_id".}: Oid
     date*: Time
     url*: string
     count*: int
