@@ -65,21 +65,47 @@ proc pageGamePlay*(data: var JsonNode): string =
 
 proc pageAddGame*(data: var JsonNode): string =
   let core = render(dedent """
-    <h1>Adding Your Game</h1>
+    <h1>Add Your Game</h1>
     <p>
-      If your game meets the following criteria:
+      If your game
+      <ol>
+        <li>is written in <a href="https://nim-lang.org/">Nim</a> (at least partly),</li>
+        <li>compiles to JavaScript, and</li>
+        <li>is open source,</li>
+      </ol>
+      then I will happily consider adding your game to this website.
     </p>
-    <ol>
-      <li>It uses client-side JavaScript to function.</li>
-      <li>It is open source and available on a linkable hosted repo.</li>
-      <li>It is written, at least in part, in <a href="https://nim-lang.org/">Nim</a>.</li>
-    </ol>
-    <p>
-      Then I will happily consider adding your game to this website.
-    </p>
-    <p>
-      Please visit the website's repo at <a href="https://github.com/JohnAD/nimgame.online">github.com/JohnAD/nimgame.online</a> for details.
-    </p>
+
+    <div class="card">
+      <div class="card-header">
+        Send Suggested Game Details
+      </div>
+      <div class="card-body">
+        <form action="" method="POST">
+          <div class="form-group">
+            <label for="repo_url">URL of public source code repo</label>
+            <input type="text" class="form-control" id="repo_url" name="repo_url" aria-describedby="repo_urlHelp" placeholder="Enter the web address of the repo">
+            <small id="repo_urlHelp" class="form-text text-muted">I need this address to even get started.</small>
+          </div>
+          <div class="form-group">
+            <label for="example_url">URL of playable page (optional)</label>
+            <input type="text" class="form-control" id="example_url" name="example_url" aria-describedby="repo_urlHelp" placeholder="Enter the web address of the game">
+            <small id="example_urlHelp" class="form-text text-muted">Having a working example makes importing the game easier.</small>
+          </div>
+          <div class="form-group">
+            <label for="email">Email address (optional)</label>
+            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="email address">
+            <small id="emailHelp" class="form-text text-muted">Sending me your email let's me ask questions in case I have problems.</small>
+          </div>
+          <div class="form-group">
+            <label for="notes">Useful notes</label>
+            <textarea class="form-control" id="notes" name="notes" rows="10" aria-describedby="notesHelp"></textarea>
+            <small id="notesHelp" class="form-text text-muted">Each project is different. Add extra detail here.</small>
+          </div>      
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
   """, data)
   data["core"] = core
   result = render(PageTemplate, data)

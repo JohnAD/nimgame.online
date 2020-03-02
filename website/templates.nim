@@ -50,16 +50,15 @@ const PageTemplate* = dedent """
 
       </nav>
 
-
       <div class="msgbox-frame">
-      {{#_msgBoxes}}
-        <div class="alert alert-{{_j}}" role="alert">
-          {{m}}
+      {{#msgs}}
+        <div class="alert alert-{{judgement}}" role="alert">
+          {{text}}
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-      {{/_msgBoxes}}
+      {{/msgs}}
       </div>
 
       <div class="container">
